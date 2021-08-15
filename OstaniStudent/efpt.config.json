@@ -1,0 +1,64 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "ServiceDb",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Database",
+   "OutputPath": "Database\/Models",
+   "ProjectRootNamespace": "OstaniStudent",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[Korisnici]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[KorisniciPredmeti]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[KorisniciUloge]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[KorisnikZeljeniModul]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Moduli]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Predmeti]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Sifrarnik]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Uloge]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "DESKTOP-8DE8DS7.OstaniStudentDB",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}
