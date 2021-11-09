@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OstaniStudent.Database;
 using OstaniStudent.Database.Models;
+using OstaniStudent.Services;
 
 namespace OstaniStudent.Controllers
 {
@@ -15,106 +16,57 @@ namespace OstaniStudent.Controllers
     public class KorisniciController : ControllerBase
     {
         private readonly ServiceDb _context;
+        private readonly KorisniciService _korisniciService;
 
-        public KorisniciController(ServiceDb context)
+        public KorisniciController(
+            ServiceDb context,
+            KorisniciService korisniciService 
+            )
         {
             _context = context;
+            _korisniciService = korisniciService;
         }
 
-        // GET: api/Korisnici
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Korisnici>>> GetKorisnicis()
+        [Route("getallusers")]
+        public async Task<ActionResult> GetUsers()
         {
-            return await _context.Korisnicis.ToListAsync();
+            var result = await _korisniciService.GetAllUsers();
+            return Ok(result);
         }
 
-        // GET: api/Korisnici/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Korisnici>> GetKorisnici(int id)
+        [HttpGet]
+        [Route("getuserbyid/{id}")]
+        public async Task<ActionResult> GetUserById([FromRoute] int id)
         {
-            var korisnici = await _context.Korisnicis.Where(t => t.Id == id).FirstOrDefaultAsync();
-
-            if (korisnici == null)
-            {
-                return NotFound();
-            }
-
-            return korisnici;
+            var result = await _korisniciService.GetUserById(id);
+            return Ok(result);
         }
 
-        // PUT: api/Korisnici/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutKorisnici(int id, Korisnici korisnici)
-        {
-            if (id != korisnici.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(korisnici).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!KorisniciExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Korisnici
         [HttpPost]
-        public async Task<ActionResult<Korisnici>> PostKorisnici(Korisnici korisnici)
+        [Route("adduser")]
+        public async Task<ActionResult<Korisnici>> AddUser(Korisnici korisnik)
         {
-            _context.Korisnicis.Add(korisnici);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (KorisniciExists(korisnici.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetKorisnici", new { id = korisnici.Id }, korisnici);
+            var result = await _korisniciService.AddUser(korisnik);
+            return Ok(result);
         }
 
-        // DELETE: api/Korisnici/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteKorisnici(int id)
+        [HttpPut]
+        [Route("updateuser")]
+        public async Task<ActionResult<Korisnici>> UpdateUser(Korisnici korisnik)
         {
-            var korisnici = await _context.Korisnicis.FindAsync(id);
-            if (korisnici == null)
-            {
-                return NotFound();
-            }
-
-            _context.Korisnicis.Remove(korisnici);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            var result = await _korisniciService.UpdateUser(korisnik);
+            return Ok(result);
         }
 
-        private bool KorisniciExists(int id)
+
+        [HttpDelete]
+        [Route("deleteuserbyid/{id}")]
+        public async Task<ActionResult> DeleteUser([FromRoute] int id)
         {
-            return _context.Korisnicis.Any(e => e.Id == id);
+            var result = await _korisniciService.DeleteUserById(id);
+            return Ok(result);
         }
+
     }
 }

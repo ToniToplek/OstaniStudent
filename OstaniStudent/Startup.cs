@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using OstaniStudent.Database;
+using OstaniStudent.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,18 @@ namespace OstaniStudent
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
             services.AddDbContext<ServiceDb>(options => options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+            services.AddCors(option =>
+            {
+                option.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+            services.AddScoped<KorisniciService>();
+            services.AddScoped<PredmetiService>();
+            services.AddScoped<ModuliService>();
+            services.AddScoped<SifrarnikService>();
+            services.AddScoped<UlogeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +59,7 @@ namespace OstaniStudent
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
 
+            app.UseCors();
             app.UseHttpsRedirection();
 
             app.UseRouting();

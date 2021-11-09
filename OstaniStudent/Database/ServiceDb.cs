@@ -36,8 +36,6 @@ namespace OstaniStudent.Database
             {
                 entity.ToTable("Korisnici");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Email)
                     .HasMaxLength(100)
                     .IsUnicode(false);
@@ -62,8 +60,6 @@ namespace OstaniStudent.Database
             {
                 entity.ToTable("KorisniciPredmeti");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.HasOne(d => d.IdKorisnikNavigation)
                     .WithMany(p => p.KorisniciPredmetis)
                     .HasForeignKey(d => d.IdKorisnik)
@@ -80,8 +76,6 @@ namespace OstaniStudent.Database
             modelBuilder.Entity<KorisniciUloge>(entity =>
             {
                 entity.ToTable("KorisniciUloge");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.HasOne(d => d.IdKorisnikNavigation)
                     .WithMany(p => p.KorisniciUloges)
@@ -100,8 +94,6 @@ namespace OstaniStudent.Database
             {
                 entity.ToTable("KorisnikZeljeniModul");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.HasOne(d => d.IdKorisnikNavigation)
                     .WithMany(p => p.KorisnikZeljeniModuls)
                     .HasForeignKey(d => d.IdKorisnik)
@@ -119,8 +111,6 @@ namespace OstaniStudent.Database
             {
                 entity.ToTable("Moduli");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Naziv)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -130,8 +120,6 @@ namespace OstaniStudent.Database
             modelBuilder.Entity<Predmeti>(entity =>
             {
                 entity.ToTable("Predmeti");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Naziv)
                     .IsRequired()
@@ -154,8 +142,6 @@ namespace OstaniStudent.Database
             {
                 entity.ToTable("Sifrarnik");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Naziv)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -165,8 +151,6 @@ namespace OstaniStudent.Database
             modelBuilder.Entity<Uloge>(entity =>
             {
                 entity.ToTable("Uloge");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Naziv)
                     .IsRequired()
