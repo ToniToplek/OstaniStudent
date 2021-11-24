@@ -36,6 +36,28 @@ namespace OstaniStudent.Services
             }
         }
 
+        public async Task<List<Predmeti>> GetRequiredPredmets(bool isRequired, int selectedModulId)
+        {
+            try
+            {
+                if (isRequired) { 
+                    var dbData = await _dbContext.Predmetis.Where(t=>t.IdModul == selectedModulId).AsNoTracking().ToListAsync();
+                    return dbData;
+                }
+                else
+                {
+                    var dbData = await _dbContext.Predmetis.Where(t => t.IdModul != selectedModulId).AsNoTracking().ToListAsync();
+                    return dbData;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
         public async Task<Predmeti> GetPredmetById(int id)
         {
             try

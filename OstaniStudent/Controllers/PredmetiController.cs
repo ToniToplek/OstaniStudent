@@ -36,6 +36,14 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
+        [Route("getrequiredpredmets/{selectedModulId}")]
+        public async Task<ActionResult> GetRequiredPredmets([FromQuery] bool isRequired, [FromRoute] int selectedModulId)
+        {
+            var result = await _predmetiService.GetRequiredPredmets(isRequired, selectedModulId);
+            return Ok(result);
+        }
+
+        [HttpGet]
         [Route("getpredmetbyid")]
         public async Task<ActionResult> GetPredmetById(int id)
         {

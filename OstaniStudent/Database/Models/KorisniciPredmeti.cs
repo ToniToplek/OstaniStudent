@@ -11,7 +11,7 @@ namespace OstaniStudent.Database.Models
         public int Id { get; set; }
         public int IdKorisnik { get; set; }
         public int IdPredmet { get; set; }
-        public int Rank { get; set; }
+        public int Rang { get; set; }
         public int BrojIzbora { get; set; }
         public bool JeAktivan { get; set; }
 

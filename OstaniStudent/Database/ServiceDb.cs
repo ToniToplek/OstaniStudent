@@ -27,6 +27,8 @@ namespace OstaniStudent.Database
         public virtual DbSet<Predmeti> Predmetis { get; set; }
         public virtual DbSet<Sifrarnik> Sifrarniks { get; set; }
         public virtual DbSet<Uloge> Uloges { get; set; }
+        public virtual DbSet<VKorisniciUloge> VKorisniciUloges { get; set; }
+        public virtual DbSet<VOstaniStudent> VOstaniStudents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -154,6 +156,70 @@ namespace OstaniStudent.Database
 
                 entity.Property(e => e.Naziv)
                     .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<VKorisniciUloge>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vKorisniciUloge");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Ime)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Jmbag)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("JMBAG");
+
+                entity.Property(e => e.Naziv)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Prezime)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<VOstaniStudent>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vOstaniStudent");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Ime)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Jmbag)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("JMBAG");
+
+                entity.Property(e => e.ModulNaziv)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PredmetNaziv).HasMaxLength(50);
+
+                entity.Property(e => e.Prezime)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UlogaNaziv)
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });

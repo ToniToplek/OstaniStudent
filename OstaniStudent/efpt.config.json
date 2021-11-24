@@ -44,6 +44,14 @@
       {
          "Name": "[dbo].[Uloge]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[vKorisniciUloge]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vOstaniStudent]",
+         "ObjectType": 3
       }
    ],
    "UiHint": "DESKTOP-8DE8DS7.OstaniStudentDB",

@@ -45,7 +45,7 @@ namespace OstaniStudent.Controllers
 
         [HttpPost]
         [Route("adduser")]
-        public async Task<ActionResult<Korisnici>> AddUser(Korisnici korisnik)
+        public async Task<ActionResult<Korisnici>> AddUser(VKorisniciUloge korisnik)
         {
             var result = await _korisniciService.AddUser(korisnik);
             return Ok(result);
@@ -53,7 +53,7 @@ namespace OstaniStudent.Controllers
 
         [HttpPut]
         [Route("updateuser")]
-        public async Task<ActionResult<Korisnici>> UpdateUser(Korisnici korisnik)
+        public async Task<ActionResult<Korisnici>> UpdateUser(VKorisniciUloge korisnik)
         {
             var result = await _korisniciService.UpdateUser(korisnik);
             return Ok(result);
@@ -67,6 +67,16 @@ namespace OstaniStudent.Controllers
             var result = await _korisniciService.DeleteUserById(id);
             return Ok(result);
         }
+
+
+        [HttpPost]
+        [Route("addchoice")]
+        public async Task<ActionResult<Korisnici>> SaveStudentChoice(OstaniStudentDto[] model)
+        {
+            var result = await _korisniciService.SaveStudentChoice(model);
+            return Ok(result);
+        }
+
 
     }
 }
