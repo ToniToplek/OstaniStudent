@@ -26,7 +26,7 @@ namespace OstaniStudent.Services
         {
             try
             {
-                var dbData = await _dbContext.Uloges.AsNoTracking().ToListAsync();
+                var dbData = await _dbContext.Uloges.AsNoTracking().Where(t => t.JeAktivan).ToListAsync();
                 return dbData;       
             }
             catch (Exception ex)
@@ -54,6 +54,7 @@ namespace OstaniStudent.Services
         {
             try
             {
+                uloga.JeAktivan = true;
                 await _dbContext.Uloges.AddAsync(uloga);
                 await _dbContext.SaveChangesAsync();
 

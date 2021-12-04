@@ -16,8 +16,9 @@ namespace OstaniStudent.Database.Models
         public int Id { get; set; }
         public string Naziv { get; set; }
         public int Kapacitet { get; set; }
-        public int IdModul { get; set; }
+        public int? IdModul { get; set; }
         public int IdSifrarnik { get; set; }
+        public bool JeZimski { get; set; }
         public bool JeAktivan { get; set; }
 
         public virtual Moduli IdModulNavigation { get; set; }

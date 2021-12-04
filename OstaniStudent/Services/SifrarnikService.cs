@@ -26,7 +26,7 @@ namespace OstaniStudent.Services
         {
             try
             {
-                var dbData = await _dbContext.Sifrarniks.AsNoTracking().ToListAsync();
+                var dbData = await _dbContext.Sifrarniks.AsNoTracking().Where(t => t.JeAktivan).ToListAsync();
                 dbData.OrderBy(t => t.Naziv);
                 return dbData;       
             }
@@ -55,6 +55,7 @@ namespace OstaniStudent.Services
         {
             try
             {
+                sifrarnik.JeAktivan = true;
                 await _dbContext.Sifrarniks.AddAsync(sifrarnik);
                 await _dbContext.SaveChangesAsync();
 

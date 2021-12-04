@@ -16,6 +16,7 @@ namespace OstaniStudent.Database.Models
 
         public int Id { get; set; }
         public string Naziv { get; set; }
+        public string Kratica { get; set; }
         public bool JeAktivan { get; set; }
 
         public virtual ICollection<KorisnikZeljeniModul> KorisnikZeljeniModuls { get; set; }

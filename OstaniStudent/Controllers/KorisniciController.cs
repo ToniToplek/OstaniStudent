@@ -36,6 +36,22 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
+        [Route("getalluserschoice")]
+        public async Task<ActionResult> GetUsersChoice()
+        {
+            var result = await _korisniciService.GetAllUsersChoices();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("getalluserssubjectchoice/{odabir}/{korisnikId}")]
+        public async Task<ActionResult> GetUsersSubjectChoice([FromRoute] int odabir, [FromRoute] int korisnikId)
+        {
+            var result = await _korisniciService.GetAllUsersSubjectChoices(korisnikId, odabir);
+            return Ok(result);
+        }
+
+        [HttpGet]
         [Route("getuserbyid/{id}")]
         public async Task<ActionResult> GetUserById([FromRoute] int id)
         {
@@ -65,6 +81,14 @@ namespace OstaniStudent.Controllers
         public async Task<ActionResult> DeleteUser([FromRoute] int id)
         {
             var result = await _korisniciService.DeleteUserById(id);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        [Route("deleteuserchoicebyid/{id}")]
+        public async Task<ActionResult> DeleteUserChoice([FromRoute] int id)
+        {
+            var result = await _korisniciService.DeleteUserChoiceById(id);
             return Ok(result);
         }
 

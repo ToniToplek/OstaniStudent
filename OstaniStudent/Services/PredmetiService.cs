@@ -26,7 +26,7 @@ namespace OstaniStudent.Services
         {
             try
             {
-                var dbData = await _dbContext.Predmetis.AsNoTracking().ToListAsync();
+                var dbData = await _dbContext.Predmetis.Where(t => t.JeAktivan).AsNoTracking().ToListAsync();
                 return dbData;       
             }
             catch (Exception ex)
@@ -41,12 +41,12 @@ namespace OstaniStudent.Services
             try
             {
                 if (isRequired) { 
-                    var dbData = await _dbContext.Predmetis.Where(t=>t.IdModul == selectedModulId).AsNoTracking().ToListAsync();
+                    var dbData = await _dbContext.Predmetis.Where(t => (t.IdSifrarnik == 1 || t.IdModul == selectedModulId) && t.JeAktivan).AsNoTracking().ToListAsync();
                     return dbData;
                 }
                 else
                 {
-                    var dbData = await _dbContext.Predmetis.Where(t => t.IdModul != selectedModulId).AsNoTracking().ToListAsync();
+                    var dbData = await _dbContext.Predmetis.Where(t => t.IdSifrarnik != 1 && t.IdModul != selectedModulId && t.JeAktivan).AsNoTracking().ToListAsync();
                     return dbData;
                 }
                 
@@ -76,6 +76,7 @@ namespace OstaniStudent.Services
         {
             try
             {
+                predmet.JeAktivan = true;
                 await _dbContext.Predmetis.AddAsync(predmet);
                 await _dbContext.SaveChangesAsync();
 
@@ -97,6 +98,7 @@ namespace OstaniStudent.Services
                 dbData.Kapacitet = predmet.Kapacitet;
                 dbData.IdModul = predmet.IdModul;
                 dbData.IdSifrarnik = predmet.IdSifrarnik;
+                dbData.JeZimski = predmet.JeZimski;
                 _dbContext.Update(dbData);
                 await _dbContext.SaveChangesAsync();
 

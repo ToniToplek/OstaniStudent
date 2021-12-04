@@ -50,6 +50,14 @@
          "ObjectType": 3
       },
       {
+         "Name": "[dbo].[vKorisniciZeljeniModuli]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vKorisniciZeljeniPredmeti]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[dbo].[vOstaniStudent]",
          "ObjectType": 3
       }

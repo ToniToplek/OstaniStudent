@@ -28,6 +28,8 @@ namespace OstaniStudent.Database
         public virtual DbSet<Sifrarnik> Sifrarniks { get; set; }
         public virtual DbSet<Uloge> Uloges { get; set; }
         public virtual DbSet<VKorisniciUloge> VKorisniciUloges { get; set; }
+        public virtual DbSet<VKorisniciZeljeniModuli> VKorisniciZeljeniModulis { get; set; }
+        public virtual DbSet<VKorisniciZeljeniPredmeti> VKorisniciZeljeniPredmetis { get; set; }
         public virtual DbSet<VOstaniStudent> VOstaniStudents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -113,6 +115,11 @@ namespace OstaniStudent.Database
             {
                 entity.ToTable("Moduli");
 
+                entity.Property(e => e.Kratica)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Naziv)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -130,7 +137,6 @@ namespace OstaniStudent.Database
                 entity.HasOne(d => d.IdModulNavigation)
                     .WithMany(p => p.Predmetis)
                     .HasForeignKey(d => d.IdModul)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Predmeti_Moduli");
 
                 entity.HasOne(d => d.IdSifrarnikNavigation)
@@ -182,6 +188,50 @@ namespace OstaniStudent.Database
                 entity.Property(e => e.Naziv)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Prezime)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<VKorisniciZeljeniModuli>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vKorisniciZeljeniModuli");
+
+                entity.Property(e => e.Ime)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Naziv)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Prezime)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<VKorisniciZeljeniPredmeti>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vKorisniciZeljeniPredmeti");
+
+                entity.Property(e => e.Ime)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Kratica)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Modul)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Naziv).HasMaxLength(50);
 
                 entity.Property(e => e.Prezime)
                     .HasMaxLength(50)

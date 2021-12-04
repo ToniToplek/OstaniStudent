@@ -134,6 +134,37 @@ namespace OstaniStudent.Services
             }
         }
 
+        public async Task<bool> DeleteUserChoiceById(int id)
+        {
+            try
+            {
+
+                var dbData = _dbContext.KorisnikZeljeniModuls.Where(t => t.IdKorisnik == id).ToList();
+
+                foreach (var item in dbData)
+                {
+                    item.JeAktivan = false;
+                }
+
+                var predmets = _dbContext.KorisniciPredmetis.Where(t => t.IdKorisnik == id).ToList();
+
+                foreach (var item in predmets)
+                {
+                    item.JeAktivan = false;
+                }
+
+                await _dbContext.SaveChangesAsync();
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
         public async Task<bool> SaveStudentChoice(OstaniStudentDto[] model)
         {
             try
@@ -170,6 +201,77 @@ namespace OstaniStudent.Services
                 throw;
             }
         }
+
+
+
+        public async Task<List<KorisniciZeljeniModuliDto>> GetAllUsersChoices()
+        {
+            try
+            {
+                var dbData = await _dbContext.VKorisniciZeljeniModulis.AsNoTracking().ToListAsync();
+
+                var allData = new List<KorisniciZeljeniModuliDto>();
+                var ids = new List<int>();
+                foreach (var item in dbData)
+                {
+                    if (ids.Contains(item.IdKorisnik))
+                    {
+                        var data = allData.FirstOrDefault(t => t.IdKorisnik == item.IdKorisnik);
+                        if (item.Rang == 1)
+                        {
+                            data.PrviIzbor = item.Naziv;
+                            data.PrviIzborModulId = item.IdModul;
+                        }
+                        else if (item.Rang == 2)
+                        {
+                            data.DrugiIzbor = item.Naziv;
+                            data.DrugiIzborModulId = item.IdModul;
+                        }
+                    }
+                    else
+                    {
+                        var data = new KorisniciZeljeniModuliDto();
+                        data.IdKorisnik = item.IdKorisnik;
+                        data.Ime = item.Ime;
+                        data.Prezime = item.Prezime;
+                        if(item.Rang == 1)
+                        {
+                            data.PrviIzbor = item.Naziv;
+                            data.PrviIzborModulId = item.IdModul;
+                        }
+                        else if(item.Rang == 2)
+                        {
+                            data.DrugiIzbor = item.Naziv;
+                            data.DrugiIzborModulId = item.IdModul;
+                        }
+                        allData.Add(data);
+                        ids.Add(data.IdKorisnik);
+                    }
+                }
+
+                return allData;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        public async Task<List<VKorisniciZeljeniPredmeti>> GetAllUsersSubjectChoices(int korisnikId, int odabir)
+        {
+            try
+            {
+                var dbData = await _dbContext.VKorisniciZeljeniPredmetis.Where(t => t.IdKorisnik == korisnikId && t.Rang == odabir).AsNoTracking().ToListAsync();
+                return dbData;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
 
     }
 }

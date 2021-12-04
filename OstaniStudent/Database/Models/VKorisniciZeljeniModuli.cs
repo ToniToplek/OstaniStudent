@@ -6,18 +6,15 @@ using System.Collections.Generic;
 
 namespace OstaniStudent.Database.Models
 {
-    public partial class Sifrarnik
+    public partial class VKorisniciZeljeniModuli
     {
-        public Sifrarnik()
-        {
-            Predmetis = new HashSet<Predmeti>();
-        }
-
         public int Id { get; set; }
+        public string Ime { get; set; }
+        public string Prezime { get; set; }
+        public int IdKorisnik { get; set; }
+        public int IdModul { get; set; }
+        public int Rang { get; set; }
         public string Naziv { get; set; }
-        public bool ZahtijevaModul { get; set; }
         public bool JeAktivan { get; set; }
-
-        public virtual ICollection<Predmeti> Predmetis { get; set; }
     }
 }

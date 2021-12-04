@@ -26,7 +26,7 @@ namespace OstaniStudent.Services
         {
             try
             {
-                var dbData = await _dbContext.Modulis.AsNoTracking().ToListAsync();
+                var dbData = await _dbContext.Modulis.AsNoTracking().Where(t => t.JeAktivan).ToListAsync();
                 dbData.OrderBy(t => t.Naziv);
                 return dbData;       
             }
@@ -55,6 +55,7 @@ namespace OstaniStudent.Services
         {
             try
             {
+                modul.JeAktivan = true;
                 await _dbContext.Modulis.AddAsync(modul);
                 await _dbContext.SaveChangesAsync();
 
@@ -73,6 +74,7 @@ namespace OstaniStudent.Services
             {
                 var dbData = _dbContext.Modulis.Where(t => t.Id == modul.Id).FirstOrDefault();
                 dbData.Naziv = modul.Naziv;
+                dbData.Kratica = modul.Kratica;
                 _dbContext.Update(dbData);
                 await _dbContext.SaveChangesAsync();
 
