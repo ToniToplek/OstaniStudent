@@ -52,10 +52,19 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
-        [Route("getuserbyid/{id}")]
-        public async Task<ActionResult> GetUserById([FromRoute] int id)
+        [Route("getuserbybulkid/{bulkId}")]
+        public async Task<ActionResult> GetUserById([FromRoute] string bulkId)
         {
-            var result = await _korisniciService.GetUserById(id);
+            var result = await _korisniciService.GetUserByBulkId(bulkId);
+            return Ok(result);
+        }
+
+
+        [HttpPost]
+        [Route("getuserbylogindata")]
+        public async Task<ActionResult> LoginData(Korisnici korisnik)
+        {
+            var result = await _korisniciService.GetUserByLoginData(korisnik);
             return Ok(result);
         }
 

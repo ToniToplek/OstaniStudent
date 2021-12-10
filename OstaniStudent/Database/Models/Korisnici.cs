@@ -21,6 +21,7 @@ namespace OstaniStudent.Database.Models
         public string Email { get; set; }
         public string Jmbag { get; set; }
         public Guid? BulkId { get; set; }
+        public string Lozinka { get; set; }
         public bool JeAktivan { get; set; }
 
         public virtual ICollection<KorisniciPredmeti> KorisniciPredmetis { get; set; }

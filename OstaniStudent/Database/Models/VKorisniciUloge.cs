@@ -16,5 +16,6 @@ namespace OstaniStudent.Database.Models
         public string Naziv { get; set; }
         public string Email { get; set; }
         public int KorisniciUlogeId { get; set; }
+        public string Lozinka { get; set; }
     }
 }

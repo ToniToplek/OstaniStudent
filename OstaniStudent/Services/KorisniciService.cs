@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BC = BCrypt.Net.BCrypt;
 
 namespace OstaniStudent.Services
 {
@@ -27,6 +28,10 @@ namespace OstaniStudent.Services
             try
             {
                 var dbData = await _dbContext.VKorisniciUloges.AsNoTracking().ToListAsync();
+                foreach (var item in dbData)
+                {
+                    item.Lozinka = "";
+                }
                 return dbData;       
             }
             catch (Exception ex)
@@ -36,12 +41,36 @@ namespace OstaniStudent.Services
             }
         }
 
-        public async Task<Korisnici> GetUserById(int id)
+        public async Task<Korisnici> GetUserByBulkId(string bulkId)
         {
             try
             {
-                var dbData = await _dbContext.Korisnicis.Where(t => t.Id == id).AsNoTracking().FirstOrDefaultAsync();
+                var dbData = await _dbContext.Korisnicis.Where(t => t.BulkId == new Guid(bulkId)).AsNoTracking().FirstOrDefaultAsync();
+                dbData.Lozinka = "";
                 return dbData;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        public async Task<Korisnici> GetUserByLoginData(Korisnici korisnik)
+        {
+            try
+            {
+                var dbData = await _dbContext.Korisnicis.Where(t => t.Email == korisnik.Email && t.JeAktivan).AsNoTracking().FirstOrDefaultAsync();
+
+                if(dbData == null || !BC.Verify(korisnik.Lozinka, dbData.Lozinka))
+                {
+                    return new Korisnici();
+                }
+                else
+                {
+                    return dbData;
+                }
+
             }
             catch (Exception ex)
             {
@@ -60,6 +89,7 @@ namespace OstaniStudent.Services
                 user.Prezime = korisniciUloge.Prezime;
                 user.Jmbag = korisniciUloge.Jmbag;
                 user.Email = korisniciUloge.Email;
+                user.Lozinka = BC.HashPassword(korisniciUloge.Lozinka);
                 user.JeAktivan = true;
                 await _dbContext.Korisnicis.AddAsync(user);
                 await _dbContext.SaveChangesAsync();
@@ -90,7 +120,10 @@ namespace OstaniStudent.Services
                 oldUser.Prezime = user.Prezime;
                 oldUser.Jmbag = user.Jmbag;
                 oldUser.Email = user.Email;
-                 _dbContext.Korisnicis.Update(oldUser);
+                if(user.Lozinka.Length > 2) { 
+                    oldUser.Lozinka = BC.HashPassword(user.Lozinka);
+                }
+                _dbContext.Korisnicis.Update(oldUser);
 
                 var oldKorUl = _dbContext.KorisniciUloges.Where(t => t.Id == user.KorisniciUlogeId).FirstOrDefault();
                 oldKorUl.IdUloge = (int)user.UlogaId;

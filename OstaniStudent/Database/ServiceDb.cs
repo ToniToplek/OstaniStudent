@@ -54,6 +54,10 @@ namespace OstaniStudent.Database
                     .IsUnicode(false)
                     .HasColumnName("JMBAG");
 
+                entity.Property(e => e.Lozinka)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Prezime)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -184,6 +188,10 @@ namespace OstaniStudent.Database
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("JMBAG");
+
+                entity.Property(e => e.Lozinka)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Naziv)
                     .HasMaxLength(50)
