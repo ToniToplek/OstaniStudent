@@ -56,15 +56,31 @@ namespace OstaniStudent.Services
             }
         }
 
+        public async Task<Korisnici> GetUserById(string Id)
+        {
+            try
+            {
+                var dbData = await _dbContext.Korisnicis.Where(t => t.Id.ToString() == Id).AsNoTracking().FirstOrDefaultAsync();
+                dbData.Lozinka = "";
+                return dbData;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+
         public async Task<Korisnici> GetUserByLoginData(Korisnici korisnik)
         {
             try
             {
                 var dbData = await _dbContext.Korisnicis.Where(t => t.Email == korisnik.Email && t.JeAktivan).AsNoTracking().FirstOrDefaultAsync();
 
-                if(dbData == null || !BC.Verify(korisnik.Lozinka, dbData.Lozinka))
+                if (dbData == null || !BC.Verify(korisnik.Lozinka, dbData.Lozinka))
                 {
-                    return new Korisnici();
+                    return null;
                 }
                 else
                 {

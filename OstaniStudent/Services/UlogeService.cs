@@ -36,11 +36,11 @@ namespace OstaniStudent.Services
             }
         }
 
-        public async Task<Uloge> GetUlogaById(int id)
+        public async Task<VKorisniciUloge> GetUlogaByClientId(int id)
         {
             try
             {
-                var dbData = await _dbContext.Uloges.Where(t => t.Id == id).AsNoTracking().FirstOrDefaultAsync();
+                var dbData = await _dbContext.VKorisniciUloges.Where(t => t.KorisnikId == id).AsNoTracking().FirstOrDefaultAsync();
                 return dbData;
             }
             catch (Exception ex)

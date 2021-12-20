@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("getallulogas")]
         public async Task<ActionResult> GetUlogas()
         {
@@ -36,15 +38,17 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
-        [Route("getulogabyid")]
+        [Authorize]
+        [Route("getulogabyuserid/{id}")]
         public async Task<ActionResult> GetUlogaById(int id)
         {
-            var result = await _ulogeService.GetUlogaById(id);
+            var result = await _ulogeService.GetUlogaByClientId(id);
             return Ok(result);
         }
 
 
         [HttpPost]
+        [Authorize]
         [Route("adduloga")]
         public async Task<ActionResult<Uloge>> AddUloga(Uloge uloga)
         {
@@ -53,6 +57,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         [Route("updateuloga")]
         public async Task<ActionResult<Uloge>> UpdateUloga(Uloge uloga)
         {
@@ -62,6 +67,7 @@ namespace OstaniStudent.Controllers
 
 
         [HttpDelete]
+        [Authorize]
         [Route("deleteuloga/{id}")]
         public async Task<ActionResult> DeleteUloga([FromRoute] int id)
         {
