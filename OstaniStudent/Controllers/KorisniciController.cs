@@ -23,14 +23,16 @@ namespace OstaniStudent.Controllers
     {
         private readonly ServiceDb _context;
         private readonly KorisniciService _korisniciService;
-
+        private readonly UlogeService _ulogeService;
         public KorisniciController(
             ServiceDb context,
-            KorisniciService korisniciService 
+            KorisniciService korisniciService,
+            UlogeService ulogeService
             )
         {
             _context = context;
             _korisniciService = korisniciService;
+            _ulogeService = ulogeService;
         }
 
         [HttpGet]
@@ -78,11 +80,15 @@ namespace OstaniStudent.Controllers
 
             if(result != null)
             {
+                var role = await _ulogeService.GetUlogaByClientId(result.Id);
+                IdentityOptions _options = new IdentityOptions();
+
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("UserID", result.Id.ToString())
+                        new Claim("UserID", result.Id.ToString()),
+                        new Claim(_options.ClaimsIdentity.RoleClaimType, role.Naziv)
                     }),
                     Expires = DateTime.UtcNow.AddDays(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("PrfVmfuuO6qxsutb2a5HYPutoPOcoiyU")), SecurityAlgorithms.HmacSha256Signature)
@@ -117,7 +123,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("adduser")]
         public async Task<ActionResult<Korisnici>> AddUser(VKorisniciUloge korisnik)
         {
@@ -126,7 +132,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpPut]
-        [Authorize]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("updateuser")]
         public async Task<ActionResult<Korisnici>> UpdateUser(VKorisniciUloge korisnik)
         {
@@ -136,7 +142,7 @@ namespace OstaniStudent.Controllers
 
 
         [HttpDelete]
-        [Authorize]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("deleteuserbyid/{id}")]
         public async Task<ActionResult> DeleteUser([FromRoute] int id)
         {
@@ -145,7 +151,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("deleteuserchoicebyid/{id}")]
         public async Task<ActionResult> DeleteUserChoice([FromRoute] int id)
         {

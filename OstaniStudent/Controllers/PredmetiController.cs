@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("getallpredmets")]
         public async Task<ActionResult> GetPredmets()
         {
@@ -36,6 +38,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("getrequiredpredmets/{selectedModulId}")]
         public async Task<ActionResult> GetRequiredPredmets([FromQuery] bool isRequired, [FromRoute] int selectedModulId)
         {
@@ -44,6 +47,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("getpredmetbyid")]
         public async Task<ActionResult> GetPredmetById(int id)
         {
@@ -53,6 +57,7 @@ namespace OstaniStudent.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("addpredmet")]
         public async Task<ActionResult<Predmeti>> AddPredmet(Predmeti predmet)
         {
@@ -61,6 +66,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("updatepredmet")]
         public async Task<ActionResult<Predmeti>> UpdatePredmet(Predmeti predmet)
         {
@@ -70,6 +76,7 @@ namespace OstaniStudent.Controllers
 
 
         [HttpDelete]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("deletepredmet/{id}")]
         public async Task<ActionResult> DeletePredmet([FromRoute] int id)
         {

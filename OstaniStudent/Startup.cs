@@ -42,7 +42,8 @@ namespace OstaniStudent
             });
             services.AddDbContext<ServiceDb>(options => options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>()
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<ServiceDb>();
 
             services.Configure<IdentityOptions>(options =>

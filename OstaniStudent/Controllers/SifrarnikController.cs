@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("getallsifrarniks")]
         public async Task<ActionResult> GetSifrarniks()
         {
@@ -36,6 +38,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("getsifrarnikbyid")]
         public async Task<ActionResult> GetSifrarnikById(int id)
         {
@@ -45,6 +48,7 @@ namespace OstaniStudent.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("addsifrarnik")]
         public async Task<ActionResult<Sifrarnik>> AddSifrarnik(Sifrarnik sifrarnik)
         {
@@ -53,6 +57,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("updatesifrarnik")]
         public async Task<ActionResult<Sifrarnik>> UpdateSifrarnik(Sifrarnik sifrarnik)
         {
@@ -62,6 +67,7 @@ namespace OstaniStudent.Controllers
 
 
         [HttpDelete]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("deletesifrarnik/{id}")]
         public async Task<ActionResult> DeleteSifrarnik([FromRoute] int id)
         {

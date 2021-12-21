@@ -18,14 +18,17 @@ namespace OstaniStudent.Controllers
     {
         private readonly ServiceDb _context;
         private readonly UlogeService _ulogeService;
+        private readonly KorisniciService _korisniciService;
 
         public UlogeController(
             ServiceDb context,
-            UlogeService ulogeService
+            UlogeService ulogeService,
+            KorisniciService korisniciService
             )
         {
             _context = context;
             _ulogeService = ulogeService;
+            _korisniciService = korisniciService;
         }
 
         [HttpGet]
@@ -47,8 +50,18 @@ namespace OstaniStudent.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         [Authorize]
+        [Route("getulogabyuserbulkid/{bulkId}")]
+        public async Task<ActionResult> GetUlogaByBulkId(string bulkId)
+        {
+            var user = await _korisniciService.GetUserByBulkId(bulkId);
+            var result = await _ulogeService.GetUlogaByClientId(user.Id);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("adduloga")]
         public async Task<ActionResult<Uloge>> AddUloga(Uloge uloga)
         {
@@ -57,7 +70,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpPut]
-        [Authorize]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("updateuloga")]
         public async Task<ActionResult<Uloge>> UpdateUloga(Uloge uloga)
         {
@@ -67,7 +80,7 @@ namespace OstaniStudent.Controllers
 
 
         [HttpDelete]
-        [Authorize]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("deleteuloga/{id}")]
         public async Task<ActionResult> DeleteUloga([FromRoute] int id)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("getallmoduls")]
         public async Task<ActionResult> GetModuls()
         {
@@ -36,6 +38,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("getmodulbyid")]
         public async Task<ActionResult> GetModulById(int id)
         {
@@ -45,6 +48,7 @@ namespace OstaniStudent.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("addmodul")]
         public async Task<ActionResult<Moduli>> AddModul(Moduli modul)
         {
@@ -53,6 +57,7 @@ namespace OstaniStudent.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("updatemodul")]
         public async Task<ActionResult<Moduli>> UpdateModul(Moduli modul)
         {
@@ -62,6 +67,7 @@ namespace OstaniStudent.Controllers
 
 
         [HttpDelete]
+        [Authorize(Roles = "Admin,Moderator")]
         [Route("deletemodul/{id}")]
         public async Task<ActionResult> DeleteModul([FromRoute] int id)
         {
