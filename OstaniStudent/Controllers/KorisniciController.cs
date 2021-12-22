@@ -55,6 +55,25 @@ namespace OstaniStudent.Controllers
 
         [HttpGet]
         [Authorize]
+        [Route("getusersmodulchoice/{id}")]
+        public async Task<ActionResult> GetUserModulChoice([FromRoute] int id)
+        {
+            var result = await _korisniciService.GetUserModulChoice(id);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("getuserchoice/{bulkId}")]
+        public async Task<ActionResult> IsUserAlreadyChoice([FromRoute] string bulkId)
+        {
+            var result = await _korisniciService.IsUserAlreadyChoice(bulkId);
+            return Ok(result);
+        }
+
+
+        [HttpGet]
+        [Authorize]
         [Route("getalluserssubjectchoice/{odabir}/{korisnikId}")]
         public async Task<ActionResult> GetUsersSubjectChoice([FromRoute] int odabir, [FromRoute] int korisnikId)
         {
@@ -167,6 +186,16 @@ namespace OstaniStudent.Controllers
         {
             var result = await _korisniciService.SaveStudentChoice(model);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
+        [Route("excel")]
+        public async Task<IActionResult> ExportToExcel()
+        {
+            var stream = await _korisniciService.ExportToExcel();
+
+            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
 
 
